@@ -5,34 +5,39 @@ import androidx.recyclerview.widget.DiffUtil
 
 class EmployeeViewModel :ViewModel(){
     var repository=Repository()
-    lateinit var updatedList: List<DetailsModal>
+
 
     fun fetchUsers(): Pair<DiffUtil.DiffResult?, List<DetailsModal>> {
         //
         val newUserList:List<DetailsModal>
         newUserList=repository.detailsModalSortedbyId
-        val employeeCallBack = arrayListOf<DetailsModal>()?.let { EmployeeCallBack(newUserList, it) }
-        val diffResult = employeeCallBack?.let { DiffUtil.calculateDiff(it) }
+        val employeeCallBack=EmployeeCallBack(newUserList, arrayListOf())
+        //val employeeCallBack = arrayListOf<DetailsModal>().let { EmployeeCallBack(newUserList, it) }
+val diffResult=DiffUtil.calculateDiff(employeeCallBack)
+       // val diffResult = employeeCallBack.let { DiffUtil.calculateDiff(it) }
 
 
         return Pair(diffResult,newUserList)
 
     }
-    fun ascSorting (oldUsers:List<DetailsModal>?=null):Pair<DiffUtil.DiffResult?, List<DetailsModal>> {
-       // updatedList=repository.detailsModelSortedbyIdAsc
-        var newUserList:List<DetailsModal> = arrayListOf()
-        newUserList=repository.detailsModalSortedbyId
-        val employeeCallBack = oldUsers?.let { EmployeeCallBack(newUserList, it) }
-        val diffResult = employeeCallBack?.let { DiffUtil.calculateDiff(it) }
+    fun ascSorting (oldUsers:List<DetailsModal>):Pair<DiffUtil.DiffResult?, List<DetailsModal>> {
+
+
+        val newUserList=repository.detailsModalSortedbyId
+        //val employeeCallBack = oldUsers?.let { EmployeeCallBack(newUserList, it) }
+
+        val employeeCallBack=EmployeeCallBack(newUserList,oldUsers)
+        val diffResult = DiffUtil.calculateDiff(employeeCallBack)
         //return updatedList
         return Pair(diffResult,newUserList)
     }
 
-    fun sortByName(oldUsers: List<DetailsModal>?=null): Pair<DiffUtil.DiffResult?, List<DetailsModal>> {
+
+    fun sortByName(oldUsers: List<DetailsModal>): Pair<DiffUtil.DiffResult?, List<DetailsModal>> {
         var newUserList:List<DetailsModal> = arrayListOf()
         newUserList=repository.detailsModalSortbyName
-        val employeeCallBack = oldUsers?.let { EmployeeCallBack(newUserList, it) }
-        val diffResult = employeeCallBack?.let { DiffUtil.calculateDiff(it) }
+        val employeeCallBack=EmployeeCallBack(newUserList,oldUsers)
+        val diffResult = DiffUtil.calculateDiff(employeeCallBack)
 
         //updatedList=repository.firstFive
 
